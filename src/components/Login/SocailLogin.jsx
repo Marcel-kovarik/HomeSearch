@@ -1,7 +1,7 @@
 import React from 'react'
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import { FaApple, FaFacebook } from 'react-icons/fa';
+import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { GetData, SaveUser } from '../../services/UserService';
 import { useSession } from '../../contexts/SessionContext'
@@ -43,7 +43,7 @@ const SocailLogin = () => {
     }
 
     const handleGoogleFailure = (result) => {
-        alert(result)
+        console.log(result)
     }
 
     const responseFacebook = (response) => {
@@ -93,7 +93,7 @@ const SocailLogin = () => {
                 onFailure={handleGoogleFailure}
                 cookiePolicy={'single_host_origin'}
                 render={renderProps => (
-                    <div className='btn grayOutlineBtn largeBtn w100 mb1' onClick={renderProps.onClick}>
+                    <div className='btn btnPrimaryOutline largeBtn w100 mb1' onClick={renderProps.onClick}>
                         <div className='socialBtnIcon'><FcGoogle/></div>
                         <div>Continue with Google</div>
                     </div>
