@@ -70,11 +70,6 @@ const SocailLogin = () => {
         <div className='SocailLoginMain'>
             <div className='mb2'>Or connect with:</div>
             
-            {/* <div className='btn btnBlack largeBtn w100 mb1'>
-                <div className='socialBtnIcon'><FaApple/></div>
-                <div>Continue with Apple</div>
-            </div> */}
-
             <FacebookLogin
                 appId={Constant.facebookAppId}
                 fields="name, email, picture"

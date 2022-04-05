@@ -72,7 +72,7 @@ const SavedHomeItem = (props) => {
                         </div>
                     </div>
                     <div className='saveHomeIcon' ref={buttonRef}>
-                        <RiHeartFill color="white" onClick={()=>handleClickRemoveSavedHome(home.System.SystemID)}/>
+                        <RiHeartFill onClick={()=>handleClickRemoveSavedHome(home.System.SystemID)}/>
                     </div>
                 </div>
 

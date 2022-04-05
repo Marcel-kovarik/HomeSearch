@@ -16,7 +16,7 @@ export const PriceContent = (props) => {
     const handleChnageMin = (e) => {
         setFilterStatus({
             ...filterStatus,
-            priceLow : parseInt(e.target.value)
+            priceLow : parseInt(e.target.value.replace(",", ""))
         })
     }
     const handleClickMin = (v) => {
@@ -29,7 +29,7 @@ export const PriceContent = (props) => {
     const handleChnageMax = (e) => {
         setFilterStatus({
             ...filterStatus,
-            priceHigh : parseInt(e.target.value)
+            priceHigh : parseInt(e.target.value.replace(",", ""))
         })
     }
     const handleClickMax = (v) => {

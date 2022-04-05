@@ -9,14 +9,14 @@ import './HomeFilter.scss'
 const HomeFilter = (props) => {
 
     const {
-        searchList,
-        savedData,
-        selectedStatus,
-        setSelectedStatus,
-        filterOrder,
-        setFilterOrder,
-        selectedFilter,
-        setSelectedFilter
+      searchList,
+      savedData,
+      selectedStatus,
+      setSelectedStatus,
+      filterOrder,
+      setFilterOrder,
+      selectedFilter,
+      setSelectedFilter
     } = props
 
     const [{user}] = useSession();

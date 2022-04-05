@@ -22,6 +22,7 @@ const GoogleMap = ({initialData, filterStatus}) => {
     const mergeDataFunction = (map, maps) => {
         let bounds = new maps.LatLngBounds();
         for (let i = 0; i < data.length; ++i) {
+            if(!data[i].latitude||!data[i].longitude) continue;
             let position = new maps.LatLng(data[i].latitude, data[i].longitude);
             bounds.extend(position);
         }
@@ -84,7 +85,8 @@ const GoogleMap = ({initialData, filterStatus}) => {
         map.fitBounds(bounds);
     }
 
-    return data && <GoogleMapReact
+    return data && 
+    <GoogleMapReact
         yesIWantToUseGoogleMapApiInternals
         bootstrapURLKeys={{ key: 'AIzaSyDy4vJLsIMYYK8_CyTGciCUtsA2_87DXWg', libraries: 'places' }}
         zoom={15} 

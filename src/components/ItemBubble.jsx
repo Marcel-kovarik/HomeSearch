@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Modal from 'react-modal';
+import { ItemBubbleContent } from './ItemBubbleContent'
+import { useWindowSize } from '../hooks/useWindowSize'
 import { ModalStyle } from './Common/Modal.Style';
 import './ItemBubble.scss';
 
@@ -16,9 +18,10 @@ const ListingModal = checkFile() ? checkFile().default : null;
 
 const ItemBubble = ({ item, duplicatedItems }) => {
   const [isInfoOpen, setIsInfoOpen] = useState(false)
-
+  const modalRef = useRef(null)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState([])
+  const { width } = useWindowSize();
 
   const numFormatter = num => {
     if (num > 999 && num < 1000000) {
@@ -42,6 +45,16 @@ const ItemBubble = ({ item, duplicatedItems }) => {
     setModalIsOpen(false)  
   }
 
+  useEffect(() => {
+      window.addEventListener('click', handleOutClick);
+      return () => window.removeEventListener('click', handleOutClick);
+  },[])
+
+  const handleOutClick = (e) => {
+    if(modalRef?.current?.contains(e.target)) return
+    setIsInfoOpen(false);
+}
+
   return (
     <>
       <div
@@ -55,6 +68,7 @@ const ItemBubble = ({ item, duplicatedItems }) => {
           color: "#ffffff",
           textAlign: "center"
         }}
+        ref={modalRef}
         onClick={openInfo}
         onMouseOut={closeInfo}
         onMouseOver={openInfo}
@@ -63,49 +77,30 @@ const ItemBubble = ({ item, duplicatedItems }) => {
         {duplicatedItems.length > 1
           ? duplicatedItems.length + " Listings"
           : numFormatter(item.displayPrice)}
-        <div
-          className="popOutDiv"
-          style={{ display: isInfoOpen ? "block" : "none" }}
-        >
-          <div className="popContainer">
-            {duplicatedItems.map((duplicatedItem, index) => (
-                <div className="popItems" key={index}>
-                  <div className='cursorPointer' onClick={() => openModal(duplicatedItem)}>
-                    <img
-                      data-id={duplicatedItem.id}
-                      className="popImg"
-                      src={isInfoOpen ? duplicatedItem.photoUrl : ""}
-                      alt={`Listing ${duplicatedItem.id}`}
-                    />
-                  </div>
-                  <div className="popDetail">
-                    <div className="popDetailTitle">
-                      <div className="fontBold">
-                          {duplicatedItem.address +
-                            (duplicatedItem.unit !== undefined
-                              ? " #" + duplicatedItem.unit
-                              : "")}
-                      </div>
-                      <div>{duplicatedItem.city}</div>
-                    </div>
-                    <div> ${numFormatter(duplicatedItem.displayPrice)}</div>
-                    <div className="roomsLine"> <span>{duplicatedItem.bedrooms}</span> <img src="/images/bed-7.svg" alt='' />
-                      <span>{(duplicatedItem.halfBathrooms||0) + duplicatedItem.fullBathrooms}</span>  <img src="/images/toilet-svgrepo-com.svg" alt=''/>
-                      <span>{duplicatedItem.fullBathrooms || 0}</span>  <img src="/images/bathroom-svgrepo-com.svg" alt=''/>
-                      {
-                        duplicatedItem.squareFeet && 
-                          <>
-                            <span>~{duplicatedItem.squareFeet}</span>
-                            <img src="/images/square-layout-with-boxes-svgrepo-com.svg" alt=''/>
-                          </>
-                      }
-                      </div>
-                  </div>
-                </div>
 
-            ))}
+        { width > 700 && 
+          <div
+            className="popOutDiv"
+            style={{ display: isInfoOpen ? "block" : "none" }}
+          >
+            <ItemBubbleContent openModal={openModal} duplicatedItems={duplicatedItems} isInfoOpen={isInfoOpen}/>
           </div>
-        </div>
+        }
+        { width<=700 &&
+            <Modal
+              isOpen={isInfoOpen}
+              style={{
+                overlay: ModalStyle.overlay,
+                content: {
+                  ...ModalStyle.content,
+                  width: '400px',
+                  overflow: 'auto'
+                }
+              }}
+            >
+              <ItemBubbleContent openModal={openModal} duplicatedItems={duplicatedItems} isInfoOpen={isInfoOpen}/>
+            </Modal>
+        }
       </div>
       
       { ListingModal &&
